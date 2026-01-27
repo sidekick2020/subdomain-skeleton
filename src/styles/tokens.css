@@ -48,33 +48,42 @@
 
 /* ============================================
    COLOR TOKENS - Dark Theme
+
+   GUIDELINES: Dark mode colors should be neutral grays,
+   NOT tinted colors. This ensures consistency and
+   readability across all Sober Sidekick apps.
+
+   Based on modern dark mode standards:
+   - Primary background: #121212 to #1a1a1a (pure dark gray)
+   - Elevated surfaces: slightly lighter grays
+   - Avoid purple/blue tinted backgrounds
    ============================================ */
 
 [data-theme="dark"] {
-  /* Background Colors */
-  --bg-primary: #1a1a2e;
-  --bg-secondary: #16162a;
-  --bg-tertiary: #1e1e30;
-  --bg-hover: rgba(255, 255, 255, 0.06);
+  /* Background Colors - Neutral dark grays, NOT tinted */
+  --bg-primary: #1a1a1a;
+  --bg-secondary: #141414;
+  --bg-tertiary: #242424;
+  --bg-hover: rgba(255, 255, 255, 0.08);
   --bg-active: rgba(47, 93, 255, 0.2);
 
   /* Text Colors */
-  --text-primary: #f3f4f6;
-  --text-secondary: #d1d5db;
-  --text-muted: #9ca3af;
-  --text-faint: #6b7280;
+  --text-primary: #f5f5f5;
+  --text-secondary: #d4d4d4;
+  --text-muted: #a3a3a3;
+  --text-faint: #737373;
   --text-inverse: #111827;
 
   /* Border Colors */
-  --border-light: rgba(255, 255, 255, 0.08);
-  --border-medium: rgba(255, 255, 255, 0.15);
+  --border-light: rgba(255, 255, 255, 0.1);
+  --border-medium: rgba(255, 255, 255, 0.18);
   --border-heavy: rgba(255, 255, 255, 0.25);
 
-  /* Accent Colors (slightly adjusted for dark) */
+  /* Accent Colors (slightly adjusted for dark mode contrast) */
   --accent-secondary: #5b7fff;
 
   /* Component-specific */
-  --overlay-bg: rgba(0, 0, 0, 0.8);
+  --overlay-bg: rgba(0, 0, 0, 0.85);
 }
 
 /* ============================================

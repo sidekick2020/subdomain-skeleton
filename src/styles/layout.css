@@ -286,29 +286,100 @@
   max-height: 500px;
 }
 
+/* Sidebar mobile toggle button */
+.sidebar-mobile-toggle {
+  display: none;
+  position: fixed;
+  top: var(--space-4);
+  left: var(--space-4);
+  width: 44px;
+  height: 44px;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  z-index: calc(var(--z-fixed) + 1);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.sidebar-mobile-toggle:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+
+/* Sidebar theme toggle */
+.theme-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-md);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.theme-toggle-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--border-medium);
+}
+
+.theme-toggle-icon {
+  font-size: var(--text-lg);
+}
+
+.theme-toggle-label {
+  flex: 1;
+  text-align: left;
+}
+
+.theme-indicator {
+  margin-top: var(--space-2);
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-align: center;
+}
+
 /* Mobile sidebar */
+.sidebar-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-bg);
+  z-index: calc(var(--z-fixed) - 1);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: var(--transition-normal);
+}
+
+.sidebar-overlay.visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
 @media (max-width: 768px) {
+  .sidebar-mobile-toggle {
+    display: flex;
+  }
+
   .sidebar {
     transform: translateX(-100%);
   }
 
   .sidebar.open {
     transform: translateX(0);
-  }
-
-  .sidebar-overlay {
-    position: fixed;
-    inset: 0;
-    background: var(--overlay-bg);
-    z-index: calc(var(--z-fixed) - 1);
-    opacity: 0;
-    visibility: hidden;
-    transition: var(--transition-normal);
-  }
-
-  .sidebar.open + .sidebar-overlay {
-    opacity: 1;
-    visibility: visible;
   }
 }
 
