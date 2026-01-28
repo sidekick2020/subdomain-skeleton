@@ -46,9 +46,10 @@ subdomain-skeleton/
 │   └── manifest.json       # PWA manifest
 ├── src/
 │   ├── components/         # Shared components
-│   │   └── Header.js       # App header with nav & theme toggle
+│   │   ├── Sidebar.js      # Sidebar nav with theme toggle (default)
+│   │   └── Header.js       # Alternative header layout
 │   ├── contexts/           # React context providers
-│   │   ├── ThemeContext.js     # Light/dark theme
+│   │   ├── ThemeContext.js     # Light/dark theme (light default)
 │   │   ├── AuthContext.js      # Google Sign-In
 │   │   ├── AnalyticsContext.js # Amplitude tracking
 │   │   ├── DataCacheContext.js # Client-side caching
@@ -58,13 +59,13 @@ subdomain-skeleton/
 │   │   ├── AboutPage.js
 │   │   └── NotFound.js
 │   ├── styles/             # Design system CSS
-│   │   ├── tokens.css      # Design tokens
+│   │   ├── tokens.css      # Design tokens (color guidelines!)
 │   │   ├── base.css        # Reset & base styles
 │   │   ├── components.css  # Component styles
 │   │   ├── layout.css      # Layout patterns
 │   │   ├── utilities.css   # Utility classes
 │   │   └── index.css       # Main entry
-│   ├── App.js              # Main app component
+│   ├── App.js              # Main app component (sidebar layout)
 │   └── index.js            # Entry point
 ├── .env.example            # Environment variables template
 ├── package.json
@@ -103,13 +104,34 @@ const ALLOWED_DOMAINS = ['sobersidekick.com', 'empathyhealthtech.com'];
 
 ## Customization
 
-### 1. Update App Name
+### 1. Update App Name & Branding
 
 - `public/index.html` - Update `<title>`
 - `public/manifest.json` - Update `name` and `short_name`
-- `src/components/Header.js` - Update logo and app name
+- `src/App.js` - Update Sidebar `logo` and `appName` props
 
-### 2. Add Routes
+```jsx
+<Sidebar
+  logo="🔷"           // Your logo (emoji, image, or React component)
+  appName="My App"    // Your app name
+  navItems={navItems}
+/>
+```
+
+### 2. Configure Navigation
+
+Edit the `navItems` array in `src/App.js`:
+
+```jsx
+const navItems = [
+  { path: '/', label: 'Home', icon: '🏠' },
+  { path: '/dashboard', label: 'Dashboard', icon: '📊' },
+  { path: '/settings', label: 'Settings', icon: '⚙️' },
+  // Icons are optional - can be emojis, images, or React components
+];
+```
+
+### 3. Add Routes
 
 Edit `src/App.js`:
 
@@ -138,6 +160,65 @@ export const ANALYTICS_EVENTS = {
 
 ## Design System
 
+### Color Guidelines
+
+**IMPORTANT:** Follow these guidelines to maintain consistency across all Sober Sidekick apps.
+
+#### Light Mode (Default)
+
+Light mode is the **default theme** for all Sober Sidekick apps. Do not auto-detect system preferences.
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--bg-primary` | `#f8fafc` | Main page background |
+| `--bg-secondary` | `#f1f5f9` | Cards, panels, elevated surfaces |
+| `--bg-tertiary` | `#e2e8f0` | Inputs, secondary panels |
+| `--text-primary` | `#111827` | Headings, important text |
+| `--text-secondary` | `#374151` | Body text |
+| `--text-muted` | `#4b5563` | Labels, captions |
+| `--accent-primary` | `#2f5dff` | Primary buttons, links |
+
+#### Dark Mode
+
+Dark mode uses **neutral grays only** - never use tinted backgrounds (no purple, blue, or other colored backgrounds).
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| `--bg-primary` | `#1a1a1a` | Main page background (neutral dark gray) |
+| `--bg-secondary` | `#141414` | Sunken/recessed areas |
+| `--bg-tertiary` | `#242424` | Cards, elevated surfaces |
+| `--text-primary` | `#f5f5f5` | Headings, important text |
+| `--text-secondary` | `#d4d4d4` | Body text |
+| `--text-muted` | `#a3a3a3` | Labels, captions |
+
+#### What NOT to Do
+
+```css
+/* BAD - Using tinted dark backgrounds */
+--bg-primary: #1a1a2e;  /* Purple tint - DON'T DO THIS */
+--bg-primary: #0d1b2a;  /* Blue tint - DON'T DO THIS */
+
+/* GOOD - Neutral grays only */
+--bg-primary: #1a1a1a;  /* Pure dark gray */
+--bg-primary: #121212;  /* Slightly darker */
+```
+
+### Theme Toggle Location
+
+The theme toggle belongs in the **sidebar footer**, not in the header. This provides:
+- Clear user control without cluttering the main navigation
+- Persistent access across all pages
+- Room for a descriptive label ("Light Mode" / "Dark Mode")
+
+```jsx
+// In App.js - Sidebar handles theme toggle automatically
+<Sidebar
+  logo="🔷"
+  appName="My App"
+  navItems={navItems}
+/>
+```
+
 ### Using Design Tokens
 
 Always use CSS variables instead of hardcoded values:
@@ -150,14 +231,23 @@ Always use CSS variables instead of hardcoded values:
   padding: var(--space-4);
   border-radius: var(--radius-md);
 }
+
+/* Bad - hardcoded colors break theming */
+.my-component {
+  background: #f8fafc;
+  color: #374151;
+}
 ```
 
-### Theme Support
+### Theme Hook
 
-Theme switches automatically via `data-theme` attribute:
+Access theme state in components:
 
 ```jsx
-const { theme, toggleTheme, isDark } = useTheme();
+const { theme, toggleTheme, isDark, isLight } = useTheme();
+
+// Use for conditional rendering
+{isDark ? <DarkIcon /> : <LightIcon />}
 ```
 
 ### Component Classes

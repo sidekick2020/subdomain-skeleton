@@ -26,19 +26,15 @@ const THEMES = {
 };
 
 export const ThemeProvider = ({ children, defaultTheme = THEMES.LIGHT }) => {
-  // Initialize theme from localStorage or system preference
+  // Initialize theme from localStorage or default to light mode
+  // NOTE: We intentionally do NOT auto-detect system preference.
+  // Light mode is the default for all Sober Sidekick apps.
+  // Users can manually switch to dark mode via the sidebar toggle.
   const [theme, setThemeState] = useState(() => {
-    // Check localStorage first
     const stored = localStorage.getItem(THEME_KEY);
     if (stored && Object.values(THEMES).includes(stored)) {
       return stored;
     }
-
-    // Fall back to system preference
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-      return THEMES.DARK;
-    }
-
     return defaultTheme;
   });
 
@@ -60,25 +56,13 @@ export const ThemeProvider = ({ children, defaultTheme = THEMES.LIGHT }) => {
     // Update meta theme-color for mobile browsers
     const metaThemeColor = document.querySelector('meta[name="theme-color"]');
     if (metaThemeColor) {
-      metaThemeColor.setAttribute('content', theme === THEMES.DARK ? '#1a1a2e' : '#f8fafc');
+      metaThemeColor.setAttribute('content', theme === THEMES.DARK ? '#1a1a1a' : '#f8fafc');
     }
   }, [theme]);
 
-  // Listen for system preference changes
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-
-    const handleChange = (e) => {
-      // Only auto-switch if user hasn't explicitly set a preference
-      const stored = localStorage.getItem(THEME_KEY);
-      if (!stored) {
-        setThemeState(e.matches ? THEMES.DARK : THEMES.LIGHT);
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
+  // NOTE: We intentionally do NOT listen for system preference changes.
+  // Theme switching is manual via the sidebar toggle.
+  // This ensures consistent branding and user control.
 
   const setTheme = useCallback((newTheme) => {
     if (Object.values(THEMES).includes(newTheme)) {

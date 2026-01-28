@@ -2,8 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTheme, useAuth } from '../contexts';
 
+/**
+ * Header Component
+ *
+ * Top navigation bar with branding, navigation links, and user authentication.
+ * NOTE: Theme toggle has been moved to the Sidebar component for better UX.
+ *
+ * For apps using sidebar layout, you may not need this header at all.
+ * For apps without a sidebar, consider using HeaderWithTheme variant.
+ */
 const Header = () => {
-  const { toggleTheme, isDark } = useTheme();
+  const { isDark } = useTheme();
   const { user, isAuthenticated, signOut, renderSignInButton } = useAuth();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -48,15 +57,7 @@ const Header = () => {
 
         <div className="header-right">
           <div className="header-actions">
-            {/* Theme toggle */}
-            <button
-              className="btn btn-ghost btn-icon"
-              onClick={toggleTheme}
-              aria-label={`Switch to ${isDark ? 'light' : 'dark'} theme`}
-              style={{ fontSize: '1.25rem' }}
-            >
-              {isDark ? '☀️' : '🌙'}
-            </button>
+            {/* NOTE: Theme toggle is now in Sidebar component */}
 
             {/* User menu */}
             {isAuthenticated ? (
