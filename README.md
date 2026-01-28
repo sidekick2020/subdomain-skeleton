@@ -40,8 +40,12 @@ npm start
 
 ```
 subdomain-skeleton/
+├── .github/
+│   └── workflows/
+│       └── deploy.yml      # GitHub Pages auto-deployment
 ├── public/
-│   ├── index.html          # HTML template
+│   ├── index.html          # HTML template (with SPA redirect handler)
+│   ├── 404.html            # GitHub Pages SPA routing
 │   ├── _redirects          # SPA routing for Render/Netlify
 │   └── manifest.json       # PWA manifest
 ├── src/
@@ -273,7 +277,19 @@ const { theme, toggleTheme, isDark, isLight } = useTheme();
 
 ## Deployment
 
-### Render.com (Recommended)
+### GitHub Pages (Recommended for demos)
+
+Deployment is automatic via GitHub Actions. Just push to `main`:
+
+1. Go to your repo **Settings → Pages**
+2. Under "Build and deployment", select **GitHub Actions**
+3. Push to `main` branch - the workflow will build and deploy automatically
+
+Your app will be available at: `https://your-org.github.io/your-repo-name/`
+
+**Note:** The skeleton includes SPA routing support for GitHub Pages via 404.html redirect.
+
+### Render.com (Recommended for production)
 
 1. Connect your GitHub repo to Render
 2. The `render.yaml` is pre-configured for static site deployment
