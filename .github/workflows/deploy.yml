@@ -34,8 +34,8 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          # Set homepage for GitHub Pages subdirectory deployment
-          PUBLIC_URL: /${{ github.event.repository.name }}
+          # Custom domain - serve from root
+          PUBLIC_URL: /
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
